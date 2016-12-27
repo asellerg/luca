@@ -23,6 +23,7 @@ import apiclient
 import oauth2client
 
 SPREADSHEET_ID = '1-q5cnvS4dSZ8_IuFS9rx097GKF4NsBb5YxBpJqa9c9I'
+DISCOVERY_URL = 'https://sheets.googleapis.com/$discovery/rest?version=v4'
 
 
 class MainHandler(webapp2.RequestHandler):
@@ -31,15 +32,14 @@ class MainHandler(webapp2.RequestHandler):
             os.path.join(os.path.dirname(__file__), 'client_secrets.json'))
         http = creds.authorize(httplib2.Http())
         creds.refresh(http)
-        url = ('https://sheets.googleapis.com/$discovery/rest?'
-               'version=v4')
         service = apiclient.discovery.build('sheets', 'v4', http=http,
-                                            discoveryServiceUrl=url)
-        result = service.spreadsheets().values().get(
-                 spreadsheetId=SPREADSHEET_ID, range='Sheet1!A2:E').execute()
-        values = result.get('values', [])
+                                            discoveryServiceUrl=DISCOVERY_URL)
+        result = service.spreadsheets().values().append(
+                 spreadsheetId=SPREADSHEET_ID, range='Sheet1!A1:F1',
+                 values=['Farts','12/23/2016','','117.84','A','50']).execute()
+        updates = result.get('updates', [])
         r = twiml.Response()
-        r.message(' '.join(values[0]))
+        r.message(str(updates))
         self.response.headers['Content-Type'] = 'text/xml'
         self.response.write(str(r))
 
