@@ -34,9 +34,9 @@ class MainHandler(webapp2.RequestHandler):
         url = ('https://sheets.googleapis.com/$discovery/rest?'
                'version=v4')
         service = apiclient.discovery.build('sheets', 'v4', http=http,
-                                  discoveryServiceUrl=url)
+                                            discoveryServiceUrl=url)
         result = service.spreadsheets().values().get(
-                 spreadsheetId=spreadsheetId).execute()
+                 spreadsheetId=SPREADSHEET_ID).execute()
         values = result.get('values', [])
         r = twilio.twiml.Response()
         r.message(values[0])
