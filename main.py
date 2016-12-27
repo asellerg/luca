@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import os
+
 import httplib2
 import webapp2
 from oauth2client.client import GoogleCredentials
@@ -21,7 +23,8 @@ from twilio import twiml
 
 class MainHandler(webapp2.RequestHandler):
     def post(self):
-        creds = GoogleCredentials.from_stream('client_secrets.json')
+        creds = GoogleCredentials.from_stream(
+            os.path.join(os.path.dirname(__file__), 'client_secrets.json'))
         http = creds.authorize(httplib2.Http())
         creds.refresh(http)
         r = twiml.Response()
