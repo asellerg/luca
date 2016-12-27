@@ -18,8 +18,12 @@ import os
 
 import httplib2
 import webapp2
+from apiclient.discovery import build
 from oauth2client.client import GoogleCredentials
 from twilio import twiml
+
+SPREADSHEET_ID = '1-q5cnvS4dSZ8_IuFS9rx097GKF4NsBb5YxBpJqa9c9I'
+
 
 class MainHandler(webapp2.RequestHandler):
     def post(self):
@@ -27,8 +31,15 @@ class MainHandler(webapp2.RequestHandler):
             os.path.join(os.path.dirname(__file__), 'client_secrets.json'))
         http = creds.authorize(httplib2.Http())
         creds.refresh(http)
+        url = ('https://sheets.googleapis.com/$discovery/rest?'
+               'version=v4')
+        service = discovery.build('sheets', 'v4', http=http,
+                                  discoveryServiceUrl=url)
+        result = service.spreadsheets().values().get(
+                 spreadsheetId=spreadsheetId).execute()
+        values = result.get('values', [])
         r = twiml.Response()
-        r.message(self.request.params.get('Body', None))
+        r.message(values[0])
         self.response.headers['Content-Type'] = 'text/xml'
         self.response.write(str(r))
 
