@@ -36,6 +36,8 @@ class MainHandler(webapp2.RequestHandler):
                                             discoveryServiceUrl=DISCOVERY_URL)
         result = service.spreadsheets().values().append(
                  spreadsheetId=SPREADSHEET_ID, range='Sheet1!A1:F1',
+                 insertDataOption='INSERT_ROWS',
+                 valueInputOption='USER_ENTERED',
                  body={
                      'range': 'Sheet1!A1:F1',
                      'majorDimension': 'ROWS',
