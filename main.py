@@ -36,7 +36,7 @@ class MainHandler(webapp2.RequestHandler):
         service = apiclient.discovery.build('sheets', 'v4', http=http,
                                             discoveryServiceUrl=url)
         result = service.spreadsheets().values().get(
-                 spreadsheetId=SPREADSHEET_ID).execute()
+                 spreadsheetId=SPREADSHEET_ID, range='Sheet1!A2:E').execute()
         values = result.get('values', [])
         r = twilio.twiml.Response()
         r.message(values[0])
