@@ -20,10 +20,9 @@ from twilio import twiml
 
 class MainHandler(webapp2.RequestHandler):
     def post(self):
-        r = twiml.Response()
-        r.say("Hello Monkey!!")
-        self.response.headers['Content-Type'] = 'text/xml'
-        self.response.write(str(r))
+        resp = twilio.twiml.Response()
+        resp.message("Hello, Mobile Monkey")
+        return str(resp)
 
 app = webapp2.WSGIApplication([('/', MainHandler)],
                               debug=True)
