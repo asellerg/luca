@@ -21,7 +21,7 @@ from twilio import twiml
 class MainHandler(webapp2.RequestHandler):
     def post(self):
         r = twiml.Response()
-        r.message("Hello, Mobile Monkey")
+        r.message(self.request.body)
         self.response.headers['Content-Type'] = 'text/xml'
         self.response.write(str(r))
 
