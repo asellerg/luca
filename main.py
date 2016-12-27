@@ -17,7 +17,7 @@
 import os
 
 import httplib2
-import twilio
+from twilio import twiml
 import webapp2
 import apiclient
 import oauth2client
@@ -38,7 +38,7 @@ class MainHandler(webapp2.RequestHandler):
         result = service.spreadsheets().values().get(
                  spreadsheetId=SPREADSHEET_ID, range='Sheet1!A2:E').execute()
         values = result.get('values', [])
-        r = twilio.twiml.Response()
+        r = twiml.Response()
         r.message(values[0])
         self.response.headers['Content-Type'] = 'text/xml'
         self.response.write(str(r))
