@@ -1,6 +1,4 @@
-appengine-helloworld-python
+luca
 ===========================
 
-![status: inactive](https://img.shields.io/badge/status-inactive-red.svg)
-
-This is a simple Hello World application for Google App Engine (Python)
+Adds rows to a Google spreadsheet via text message.
