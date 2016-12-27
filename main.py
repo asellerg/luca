@@ -17,10 +17,10 @@
 import os
 
 import httplib2
+import twilio
 import webapp2
 from apiclient.discovery import build
 from oauth2client.client import GoogleCredentials
-from twilio import twiml
 
 SPREADSHEET_ID = '1-q5cnvS4dSZ8_IuFS9rx097GKF4NsBb5YxBpJqa9c9I'
 
@@ -38,7 +38,7 @@ class MainHandler(webapp2.RequestHandler):
         result = service.spreadsheets().values().get(
                  spreadsheetId=spreadsheetId).execute()
         values = result.get('values', [])
-        r = twiml.Response()
+        r = twilio.twiml.Response()
         r.message(values[0])
         self.response.headers['Content-Type'] = 'text/xml'
         self.response.write(str(r))
