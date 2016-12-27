@@ -39,7 +39,7 @@ class MainHandler(webapp2.RequestHandler):
                  spreadsheetId=SPREADSHEET_ID, range='Sheet1!A2:E').execute()
         values = result.get('values', [])
         r = twiml.Response()
-        r.message(values[0])
+        r.message(' '.join(values[0]))
         self.response.headers['Content-Type'] = 'text/xml'
         self.response.write(str(r))
 
