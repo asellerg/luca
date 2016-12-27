@@ -36,7 +36,13 @@ class MainHandler(webapp2.RequestHandler):
                                             discoveryServiceUrl=DISCOVERY_URL)
         result = service.spreadsheets().values().append(
                  spreadsheetId=SPREADSHEET_ID, range='Sheet1!A1:F1',
-                 values=['Farts','12/23/2016','','117.84','A','50']).execute()
+                 body={
+                     'range': 'Sheet1!A1:F1',
+                     'majorDimension': 'ROWS',
+                     'values': [
+                         ['Farts','12/23/2016','','117.84','A','50'],
+                     ],
+                 }).execute()
         updates = result.get('updates', [])
         r = twiml.Response()
         r.message(str(updates))
