@@ -20,7 +20,7 @@ from twilio import twiml
 
 class MainHandler(webapp2.RequestHandler):
     def post(self):
-        resp = twilio.twiml.Response()
+        resp = twiml.Response()
         resp.message("Hello, Mobile Monkey")
         return str(resp)
 
