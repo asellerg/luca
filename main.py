@@ -19,21 +19,21 @@ import os
 import httplib2
 import twilio
 import webapp2
-from apiclient.discovery import build
-from oauth2client.client import GoogleCredentials
+import apiclient
+import oauth2client
 
 SPREADSHEET_ID = '1-q5cnvS4dSZ8_IuFS9rx097GKF4NsBb5YxBpJqa9c9I'
 
 
 class MainHandler(webapp2.RequestHandler):
     def post(self):
-        creds = GoogleCredentials.from_stream(
+        creds = oauth2client.client.GoogleCredentials.from_stream(
             os.path.join(os.path.dirname(__file__), 'client_secrets.json'))
         http = creds.authorize(httplib2.Http())
         creds.refresh(http)
         url = ('https://sheets.googleapis.com/$discovery/rest?'
                'version=v4')
-        service = discovery.build('sheets', 'v4', http=http,
+        service = apiclient.discovery.build('sheets', 'v4', http=http,
                                   discoveryServiceUrl=url)
         result = service.spreadsheets().values().get(
                  spreadsheetId=spreadsheetId).execute()
