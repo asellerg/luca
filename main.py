@@ -41,7 +41,8 @@ class MainHandler(webapp2.RequestHandler):
         with open('whitelist.txt') as f:
             whitelist = f.readlines()
             if self.request.params.get('From', None) not in whitelist:
-                self.response.write('Unauthorized number.')
+                r.message('Unauthorized number.')
+                self.response.write(str(r))
                 return
 
         # Parse the text message.
@@ -60,7 +61,7 @@ class MainHandler(webapp2.RequestHandler):
                      }).execute()
             updates = result.get('updates', [])
             r.message(str(updates))
-        self.response.write(str(r))
+            self.response.write(str(r))
 
 app = webapp2.WSGIApplication([('/', MainHandler)],
                               debug=True)
