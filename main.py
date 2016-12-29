@@ -34,6 +34,17 @@ class MainHandler(webapp2.RequestHandler):
         creds.refresh(http)
         service = apiclient.discovery.build('sheets', 'v4', http=http,
                                             discoveryServiceUrl=DISCOVERY_URL)
+        r = twiml.Response()
+        self.response.headers['Content-Type'] = 'text/xml'
+
+        # Bail out if number is unauthorized.
+        with open('whitelist.txt') as f:
+            whitelist = f.readlines()
+            if self.request.params('From') not in whitelist:
+                self.response.write('Unauthorized number.')
+                return
+
+        # Parse the text message.
         body = self.request.params.get('Body', None)
         if body is not None:
             result = service.spreadsheets().values().append(
@@ -48,10 +59,8 @@ class MainHandler(webapp2.RequestHandler):
                          ],
                      }).execute()
             updates = result.get('updates', [])
-            r = twiml.Response()
             r.message(str(updates))
-            self.response.headers['Content-Type'] = 'text/xml'
-            self.response.write(str(r))
+        self.response.write(str(r))
 
 app = webapp2.WSGIApplication([('/', MainHandler)],
                               debug=True)
