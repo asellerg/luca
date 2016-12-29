@@ -34,22 +34,24 @@ class MainHandler(webapp2.RequestHandler):
         creds.refresh(http)
         service = apiclient.discovery.build('sheets', 'v4', http=http,
                                             discoveryServiceUrl=DISCOVERY_URL)
-        result = service.spreadsheets().values().append(
-                 spreadsheetId=SPREADSHEET_ID, range='Sheet1!A1:F1',
-                 insertDataOption='INSERT_ROWS',
-                 valueInputOption='USER_ENTERED',
-                 body={
-                     'range': 'Sheet1!A1:F1',
-                     'majorDimension': 'ROWS',
-                     'values': [
-                         ['Farts','12/23/2016','','117.84','A','50'],
-                     ],
-                 }).execute()
-        updates = result.get('updates', [])
-        r = twiml.Response()
-        r.message(str(updates))
-        self.response.headers['Content-Type'] = 'text/xml'
-        self.response.write(str(r))
+        body = self.request.params.get('Body', None)
+        if body is not None:
+            result = service.spreadsheets().values().append(
+                     spreadsheetId=SPREADSHEET_ID, range='A5',
+                     insertDataOption='INSERT_ROWS',
+                     valueInputOption='USER_ENTERED',
+                     body={
+                         'range': 'A5',
+                         'majorDimension': 'ROWS',
+                         'values': [
+                             body.split(','),
+                         ],
+                     }).execute()
+            updates = result.get('updates', [])
+            r = twiml.Response()
+            r.message(str(updates))
+            self.response.headers['Content-Type'] = 'text/xml'
+            self.response.write(str(r))
 
 app = webapp2.WSGIApplication([('/', MainHandler)],
                               debug=True)
