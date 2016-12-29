@@ -38,7 +38,7 @@ class MainHandler(webapp2.RequestHandler):
         if body is not None:
             result = service.spreadsheets().values().append(
                      spreadsheetId=SPREADSHEET_ID, range='A5',
-                     insertDataOption='INSERT_ROWS',
+                     insertDataOption='OVERWRITE',
                      valueInputOption='USER_ENTERED',
                      body={
                          'range': 'A5',
