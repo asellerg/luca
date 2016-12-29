@@ -39,7 +39,7 @@ class MainHandler(webapp2.RequestHandler):
 
         # Bail out if number is unauthorized.
         with open('whitelist.txt') as f:
-            whitelist = f.readlines()
+            whitelist = f.read().splitlines()
             if self.request.params.get('From', None) not in whitelist:
                 r.message('Unauthorized number.')
                 self.response.write(str(r))
