@@ -41,7 +41,7 @@ class MainHandler(webapp2.RequestHandler):
         with open('whitelist.txt') as f:
             whitelist = f.read().splitlines()
             if self.request.params.get('From', None) not in whitelist:
-                r.message('Unauthorized number.')
+                r.message('Unauthorized number: %s, whitelist: %s' % (self.request.params.get('From', None), str(whitelist)))
                 self.response.write(str(r))
                 return
 
